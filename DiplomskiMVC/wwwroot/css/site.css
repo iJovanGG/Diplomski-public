@@ -1,0 +1,212 @@
+﻿form .field-validation-error{
+    padding-top: 0;
+    padding-bottom: 1em;
+}
+
+form .input-group{
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+
+form span{
+    font-weight: 200;
+}
+
+.cover-element {
+    background-color: #1f2251d6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+}
+
+.lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: auto;
+}
+
+.lds-ellipsis div {
+    position: absolute;
+    top: 33px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.lds-ellipsis div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+}
+
+@keyframes lds-ellipsis1 {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes lds-ellipsis3 {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0);
+    }
+}
+
+@keyframes lds-ellipsis2 {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(24px, 0);
+    }
+}
+
+
+.dropdown-menu{
+    position: unset
+}
+
+.alert span {
+    display: block;
+    font-weight: 100;
+}
+
+.modal.show .modal-dialog.modal-dialog-centered {
+    transform: none;
+}
+
+.alert.error-box {
+    position: fixed;
+    bottom: 0;
+    right: 1em;
+    min-width: 70%;
+    z-index:10000;
+}
+
+.transparent-list-group .list-group-item {
+    background-color: transparent;
+    color: #e14eca;
+}
+
+.list-group-item.active {
+    color: #171940;
+}
+
+.editSubject {
+    position: absolute;
+    right: 1em;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.modal-backdrop.show{
+    opacity: 1 !important;
+}
+
+.bootstrap-select .btn.dropdown-toggle,
+.bootstrap-select .btn.dropdown-toggle:hover,
+.bootstrap-select .btn.dropdown-toggle:focus {
+    background-color: #f3f3f3 !important;
+    color: #0e0e0e;
+    margin-bottom: 0 !important;
+    text-align: left;
+    width: 100%;
+    max-width: 300px;
+}
+
+.dropdown-toggle:after {
+    position: absolute;
+    right: 1em;
+    top: 50%;
+}
+
+.bootstrap-select select {
+    display: none;
+}
+
+.modal-content form input,
+.modal-content form input:focus {
+    color: #0e0e0e;
+}
+
+.absolute-vertical-align {
+    position: absolute !important;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 !important;
+}
+
+.deleteProfessor{
+    right: 0.5em;
+}
+
+.page-header > .content{
+    text-align: left !important;
+    margin-top: 0 !important;
+}
+
+.page-header{
+    max-height: unset!important;
+    position: unset!important;
+}
+
+.main{
+    padding-top: 100px;
+    min-height: 100vh;
+}
+
+.navbar.navbar-transparent {
+    background-color: #fff !important;
+    color: #555;
+    box-shadow: 0 4px 18px 0px rgba(0, 0, 0, 0.12), 0 7px 10px -5px rgba(0, 0, 0, 0.15);
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+}
+
+.navbar {
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+
+.profile-image-wrapper{
+    width: 80%;
+    max-width:250px;
+}
+
+.profile-image{
+    padding-bottom: 100% !important;
+    border-radius:50%;
+    background-position: center;
+    background-size: cover;
+}
+

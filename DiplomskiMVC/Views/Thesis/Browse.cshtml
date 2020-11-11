@@ -1,0 +1,81 @@
+﻿@model PaginationView<ThesisView, Services.SearchQuerys.ThesisSearchQuery>
+@{string moduleId = @User.FindFirst("ModuleId") != null ? @User.FindFirst("ModuleId").Value.ToString() : null; }
+<div class="row">
+    <div class="col-12">
+        <form asp-action="Browse" asp-controller="Thesis" method="get">
+            
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="SearchQuery.PerPage">Po strani</label>
+                    <select name="SearchQuery.PerPage" class="selectpicker">
+                        <option value="25" selected="@(Model.SearchQuery.PerPage == 25 ? "selected"  : null)">25</option>
+                        <option value="35" selected="@(Model.SearchQuery.PerPage == 35 ? "selected"  : null)">35</option>
+                        <option value="50" selected="@(Model.SearchQuery.PerPage == 50 ? "selected"  : null)">50</option>
+                    </select>
+                </div>
+                @if (User.FindFirst("ModuleId") == null)
+                {
+                    <div class="form-group col">
+                        <label for="SearchQuery.ModuleId">Smer</label>
+                        <SubjectModule name="SearchQuery.ModuleId" selected-id="@Model.SearchQuery.ModuleId.ToString()" class="selectpicker"></SubjectModule>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" name="@Model.SearchQuery.ModuleId" value="@User.FindFirst("ModuleId").Value" />
+                }
+                <div class="form-group col">
+                    <label for="SearchQuery.ProfessorId">Profesori</label>
+                    <ProfessorForModuleSelect data-icon-base="fas" data-tick-icon="fa-check" title="Odaberite" name="SearchQuery.ProfessorId" multiple class="selectpicker"
+                                              module-id="@Model.SearchQuery.ModuleId" selected-id="@string.Join(",", Model.SearchQuery.ProfessorId)"></ProfessorForModuleSelect>
+                </div>
+                <div class="form-group col">
+                    <label for="SearchQuery.SubjectId">Predmeti</label>
+                    <SubjectsForModuleSelect data-icon-base="fas" data-tick-icon="fa-check" title="Odaberite" name="SearchQuery.SubjectId" multiple class="selectpicker" module-id="@Model.SearchQuery.ModuleId" selected-id="@string.Join(",", Model.SearchQuery.SubjectId)"></SubjectsForModuleSelect>
+                </div>
+                <div class="form-group col">
+                    <label>Ime teme</label>
+                    <input class="form-control mt-3" type="text" max="100" name="SearchQuery.Title" value="@Model.SearchQuery.Title" />
+                </div>
+                <div class="form-group col">
+                    <label></label>
+                    <button type="submit" class="btn btn-primary d-block">Pretraži</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    @if (Model.ObjectList.Count() == 0)
+    {
+        <h4 class="text-grey">Nema rezultata sa unetom pretragom</h4>
+    }
+    else
+    {
+        foreach (ThesisView thesisView in Model.ObjectList)
+        {
+            <div class="col-md-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="subject-tags">
+                            <label class="badge badge-pill p-2 border-primary border text-primary">@thesisView.Subject.Name</label>
+                            <label class="badge badge-pill p-2 badge-primary">@thesisView.Professor.FullName</label>
+                            <h4 class="card-title">@thesisView.Title</h4>
+                            <p>@thesisView.ShortDescription</p>
+                            @{ DateTime fallBack = thesisView.DatePublished == null ? DateTime.Now : thesisView.DatePublished.Value; }
+                            <label class="text-gray">Objavljeno @DiplomskiMVC.Helpers.DateHelper.PrettyDifference(DateTime.Now, fallBack)</label>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-right">
+                        <a class="btn btn-primary" asp-action="ThesisSingle" asp-controller="Thesis" asp-route-id="@thesisView.Id">Detalji</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+@if (Model.ObjectList.Count() > 0)
+{
+    <partial name="~/Views/Shared/_PaginationPageNumbers.cshtml" model="Model.ToObject()" />
+}

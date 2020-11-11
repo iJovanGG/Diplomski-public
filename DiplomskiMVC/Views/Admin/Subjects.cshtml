@@ -1,0 +1,79 @@
+﻿@model IEnumerable<ModuleView>
+
+<div class="row">
+    <div class="col-md-2 col-lg-3">
+        <a class="d-md-none list-group" data-toggle="collapse" href="#moduleSelect" role="button" >
+            Moduli
+        </a>
+        <div class="list-group collapse show transparent-list-group" id="list-tab" role="tablist">
+            @for(int i=0; i < Model.Count(); i++)
+            {
+                ModuleView current = Model.ElementAt(i);
+                <a class="text-left list-group-item d-flex justify-content-between align-items-center border-primary
+                   list-group-item-action @(i == 0 ? "active" : "")" data-toggle="list" href="#tab@(current.Id)">
+                    @current.Name
+                    @{ 
+                        <span class="badge badge-info badge-pill">@(current.SubjectDTOList == null ? 0 : current.SubjectDTOList.Count())</span>
+                    }
+                </a>
+            }
+        </div>
+    </div>
+    <div class="col-md-10 col-lg-9 tab-content" id="nav-tabContent">
+
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            ModuleView current = Model.ElementAt(i);
+            <div class="tab-pane fade @(i==0 ? "active show" : "")" id="tab@(current.Id)" >
+                @foreach (SubjectView subject in current.SubjectDTOList)
+                {
+                    <partial name="_SubjectCard.cshtml" model="@subject" />
+                }
+                <div class="card">
+                    <div class="card-body">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal@(current.Id)">
+                            Dodaj predmet
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@foreach(ModuleView module in Model)
+{
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal@(module.Id)">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <form class="modal-content createSubjectForm" asp-action="CreateSubject" asp-controller="Admin" data-return-target="tab@(module.Id)" >
+                <div class="modal-header">
+                    <h4 class="modal-title">Novi predmet za modul @module.Name</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="ModuleId" value="@module.Id" />
+                    <div class="form-group">
+                        <p for="Name" class="text-left">Naziv premeta</p>
+                        <input type="text" max="64" name="Name" placeholder="naziv predmeta" class="form-control"/>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+                    <button type="submit" class="btn btn-primary">Dodaj</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+<div class="modal fade" tabindex="-1" role="dialog" id="editSubjectModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+

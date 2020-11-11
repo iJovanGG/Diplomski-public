@@ -1,0 +1,55 @@
+﻿@model SubjectView
+
+<div class="modal-header">
+    <h5 class="modal-title">Izmena predmeta @Model.Name</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form asp-action="EditSubjectName" asp-controller="Admin">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <p for="Name" class="text-left">Naziv premeta</p>
+            <input type="text" max="64" asp-for="Name" placeholder="naziv predmeta" class="form-control" />
+        </div>
+    </form>
+
+    <div class="mt-2">
+        <div class="text-black-50 mb-2 text-left">Predmetni nastavnici</div>
+
+        @if (Model.ProfessorList != null)
+        {
+            <div class="list-group mb-2">
+                @foreach (FacultyProfessorView professor in Model.ProfessorList)
+                {
+                    <div class="list-group-item list-group-item-action text-left p-1">
+                        <label class="text-dark">@professor.FullName</label>
+                        <button class="input-group-text btn btn-danger btn-fab btn-icon btn-round deleteProfessor  float-right" type="button"><i class="far fa-trash-alt"></i></button>
+                    </div>
+                }
+            </div>
+        }
+        <div class="input-group collapse" id="addProfessorToSubjectFormWrapper">
+            <form asp-action="AddProfessorToSubject" asp-controller="Admin" id="AddProfessorToSubjectForm">
+                <input type="hidden" name="subjectId" value="@Model.Id" />
+                <select name="professorId">
+                </select>
+                <button type="submit" class="btn btn-primary">Dodaj</button>
+            </form>
+
+        </div>
+        <div class="input-group">
+            <button type="button" class="btn btn-primary" id="addProfessorToSubjectBtn"
+                    asp-action="GetAllUnassignedProfessorsForSubject" asp-controller="User" asp-route-id="@Model.Id">
+                Dodaj profesora
+            </button>
+        </div>
+        
+
+    </div>
+    </div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+    <button type="button" class="btn btn-primary">Sačuvaj</button>
+</div>

@@ -1,0 +1,11 @@
+.vs/
+DiplomskiAngular/bin/
+DiplomskiAngular/obj/
+DiplomskiMVC/bin/
+DiplomskiMVC/obj/
+Data/bin/
+Data/obj/
+Services/bin/
+Services/obj/
+ServicesAngular/bin/
+ServicesAngular/obj/

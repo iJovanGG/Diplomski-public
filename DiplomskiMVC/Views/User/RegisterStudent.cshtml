@@ -1,0 +1,81 @@
+﻿@model RegistrationFieldsStudent
+@{ViewData["PageTitle"] = "register-page";}
+<div class="row">
+    <div class="col-lg-5 col-md-6 offset-lg-0 offset-md-3">
+        <div id="square7" class="square square-7"></div>
+        <div id="square8" class="square square-8"></div>
+        <div class="card card-register">
+            <div class="card-header card-header-info">
+                <h4>Registruj studenta</h4>
+            </div>
+            <div class="card-body">
+                @if (ViewData.ModelState.ErrorCount > 0)
+                {
+                    <div class="input-group">
+                        <div class="alert alert-danger w-100">
+                            <h4 class="font-weight-bold">Greška</h4>
+                            @foreach (var modelState in ViewData.ModelState.Values)
+                            {
+                                foreach (var error in modelState.Errors)
+                                {
+                                    <span>@error.ErrorMessage</span>
+                                }
+                            }
+                        </div>
+
+                    </div>
+                }
+            <form class="form disableOnSubmit" asp-action="RegisterStudent" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                    </div>
+                    <input type="text" asp-for="FullName" class="form-control" placeholder="Ime i prezime">
+                </div>
+                <span asp-validation-for="FullName" class="text-danger"></span>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                    </div>
+                    <input type="email" asp-for="Email" placeholder="Email" class="form-control">
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                    </div>
+                    <input type="password" asp-for="Password" class="form-control" placeholder="Password">
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                    </div>
+                    <input type="text" asp-for="Index" class="form-control" placeholder="Indeks">
+                </div>
+                <span asp-validation-for="Index" class="text-danger"></span>
+
+                <div class="input-group d-block">
+                    <label class="d-block">Modul</label>
+                    <div class="input-group-prepend">
+                        <SubjectModule name="ModuleId" selected-id="0" class="selectpicker"></SubjectModule>
+                    </div>
+                    
+                </div>
+                <span asp-validation-for="ModuleId" class="text-danger"></span>
+
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                    </div>
+                    <input style="display:none;" type="file" accept=".jpg,.jpeg,.png,.gif" asp-for="UserImage" class="form-control custom-file-upload" placeholder="Prfilna slika">
+                    <label class="custom-file-label form-control" for="UserImage">@(Model.UserImage != null ? Model.UserImage.FileName : "Prfilna slika")</label>
+                </div>
+                <span asp-validation-for="UserImage" class="text-danger"></span>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-info btn-round btn-lg">Dodaj</button>
+                </div>
+            </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="register-bg"></div>

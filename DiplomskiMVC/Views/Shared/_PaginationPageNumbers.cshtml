@@ -1,0 +1,50 @@
+﻿@model PaginationView<Object, Object>
+@using System;
+@using Services.SearchQuerys;
+<div class="row p-0">
+    @{
+        SearchQuery searchQuery = (SearchQuery)Model.SearchQuery;
+        int totalPages = Model.TotalCount / searchQuery.PerPage + 1;
+        int i;
+        int prevoiusPage = searchQuery.Page - 1;
+        int nextPage = searchQuery.Page + 1;
+        Dictionary<string, string> pagingParams = new Dictionary<string, string>();
+        Object value;
+        foreach (var prop in Model.SearchQuery.GetType().GetProperties())
+        {
+            value = prop.GetValue(Model.SearchQuery, null);
+            if(value != null)
+                pagingParams.Add(prop.Name, value.ToString());
+        }
+    }
+    <div class="col-xs-12 col-sm-6 p-md-0">
+        <span class="text-light-grey">
+            Prikazujem @((searchQuery.Page - 1)* searchQuery.PerPage + 1).
+            do @(((searchQuery.Page - 1) * searchQuery.PerPage + searchQuery.PerPage) > Model.TotalCount 
+            ? Model.TotalCount : (searchQuery.Page - 1) * searchQuery.PerPage + searchQuery.PerPage).
+            od ukupno @Model.TotalCount rezultata
+        </span>
+    </div>
+    <div class="col-xs-12 col-sm-6 p-md-0">
+        <ul class="pagination justify-content-end">
+            <li class="page-item @(searchQuery.Page-1==0?"disabled": "")">
+                <a class="page-link" asp-controller="@Model.TargetController" asp-action="@Model.TargetAction" asp-all-route-data="pagingParams">Prethodna</a>
+            </li>
+
+            @for (i = searchQuery.Page - 2; i < searchQuery.Page + 3 && i <= totalPages; i++)
+            {
+                if (i > 0)
+                {
+                    pagingParams["Page"] = i.ToString();
+                    <li class="page-item @(searchQuery.Page==i?"active disabled": "")">
+                        <a class="page-link" asp-controller="@Model.TargetController" asp-action="@Model.TargetAction" asp-all-route-data="pagingParams">@i</a>
+                    </li>
+                }
+            }
+            @{ pagingParams["Page"] = nextPage.ToString(); }
+            <li class="page-item @(searchQuery.Page == totalPages? "disabled": "")">
+                <a class="page-link" asp-controller="@Model.TargetController" asp-action="@Model.TargetAction" asp-all-route-data="pagingParams">Sledeca</a>
+            </li>
+        </ul>
+    </div>
+</div>

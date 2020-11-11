@@ -1,0 +1,102 @@
+﻿@model FacultyProfessorView
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 col-lg-2">
+                        <div class="profile-image-wrapper">
+                            <div class="profile-image" style="background-image: url('@(Model.ProfileImageUrl != null ? Model.ProfileImageUrl : "/img/noimage.png")')"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-lg-10">
+                        <h3 class="header-title text-dark">@Model.FullName</h3>
+                        <div>
+                            <strong class="mr-2">Kancelarija:</strong>@Model.Office
+                        </div>
+                        <div>
+                            <strong class="mr-2">E-mail:</strong><a href="mailto:@(Model.Email)">@Model.Email</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value == Model.Id.ToString())
+    {
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4>Nedovršene teme</h4>
+                <div class="row">
+                    @foreach (ThesisView thesis in Model.ThesesList)
+                    {
+                        if (thesis.DatePublished == null)
+                        {
+                            <div class="col-lg-4 col-md-6 col-sm-12  thesisCard">
+                                <div class="card">
+                                    
+                                    <div class="card-body">
+                                        <label>Kreirana @thesis.DateCreated.Value.ToString("dd/MM/yyyy - HH:mm")</label>
+                                        <h5 class="card-title">@thesis.Title</h5>
+                                        <p>@thesis.ShortDescription</p>
+                                        <a asp-action="UpdateThesis" asp-controller="Thesis" asp-route-id="@thesis.Id"
+                                           class="btn btn-primary">Nastavi kreiranje</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <ul class="nav nav-pills card-header-pills" id="profileNavigation">
+                    <li class="nav-item">
+                        <a class="nav-link active show" data-toggle="tab" href="#all">
+                            Svi
+                        </a>
+                    </li>
+                    @foreach (SubjectView subject in Model.SubjectList)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab@(subject.Id)" data-subject="subject@(subject.Id)">
+                                @subject.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <div class="row" id="#thesisList">
+                    @foreach (ThesisView thesis in Model.ThesesList)
+                    {
+                        if (thesis.DatePublished != null)
+                        {
+                            <div class="col-lg-4 col-md-6 col-sm-12 subject@(thesis.Subject.Id) thesisCard">
+                                <div class="card">
+                                    @if (User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value == Model.Id.ToString())
+                                    {
+                                        <a class="editThesis btn btn-info btn-link" asp-action="UpdateThesis" asp-controller="Thesis" asp-route-id="@thesis.Id">
+                                            izmeni
+                                        </a>
+                                    }
+                                    <div class="card-body">
+                                        <h5 class="card-title">@thesis.Title</h5>
+                                        <p>@thesis.ShortDescription</p>
+                                        <a asp-action="ThesisSingle" asp-controller="Thesis" asp-route-id="@thesis.Id"
+                                           class="btn btn-primary">Detalji</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

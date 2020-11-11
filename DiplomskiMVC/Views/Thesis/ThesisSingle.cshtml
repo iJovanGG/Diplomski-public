@@ -1,0 +1,68 @@
+﻿@model ThesisView
+
+<div class="row pb-5">
+    <div class="col-12">
+        <h6 m-0>@Model.DatePublished.Value.ToString("dd.MM.yyyy")</h6>
+        <h3>
+            @Model.Title
+            @if (Model.DateUpdated != null)
+            {
+                <i class="fas fa-pen fa-xs mr-2" data-toggle="tooltip" 
+                   data-placement="bottom" title="Izmenjeno @Model.DateUpdated.Value.ToString("dd.MM.yyyy HH:mm")">
+                </i>
+            }
+        </h3>
+        <h5><a asp-action="ProfessorProfile" asp-controller="User" asp-route-id="@Model.Professor.Id">Prof. @Model.Professor.FullName</a></h5>
+    </div>
+    <div class="col-12">
+        <article>
+            @Html.Raw(Model.Discription)
+        </article>
+    </div>
+    <div class="col-12 text-right">
+        <RequestThesisButton class="btn btn-primary" formaction="/Request/MakeRequest/@Model.Id"
+            id="requestThesis" user-id="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value">Pošalji zahtev</RequestThesisButton>
+    </div>
+</div>
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <h3>Postavite komentar</h3>
+            <form asp-action="AddComment" asp-controller="Thesis" id="commentForm" method="post">
+                <input type="hidden" name="Thesis.Id" value="@Model.Id" />
+                <div class="form-group textarea-wrapper">
+                    <textarea name="Message" class="form-control w-100" rows="4" maxlength="300"></textarea>
+                    <span id="comment-error" style="display:none" class="text-danger">Morate uneti komentar</span>
+                </div>
+                <div class="form-group text-right">
+                    <button class="btn btn-primary" type="submit">Dodaj</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row mt-5">
+    @foreach(CommentView comment in Model.Comments)
+    {
+    <div class="card">
+        <div class="card-header card-header-rose col-lg-4 col-md-6 col-12">
+            <h4>@comment.User.FullName
+            @if(comment.User.Id == Model.Professor.Id)
+            {
+                <i class="fas fa-user-tie ml-3" data-toggle="tooltip" 
+                   data-placement="bottom" title="Mentor"></i>
+            }
+            </h4>
+        </div>
+        <div class="card-body">
+            <p>
+                @Html.Raw(comment.Message.Replace(Environment.NewLine, "<br/>"))
+            </p>
+            <p class="text-right text-dark">
+                @comment.Posted.ToString("dd.MM.yyyy HH:mm")
+            </p>
+        </div>
+    </div>
+    }
+    
+</div>

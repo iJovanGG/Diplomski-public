@@ -1,0 +1,26 @@
+﻿@model SubjectView
+
+<div class="card" id="subject@(Model.Id)">
+    <div class="card-body text-left">
+        <div class="editSubject">
+            <button class="btn btn-primary btn-fab btn-icon btn-round editSubjectBtn" asp-action="GetSubjectEditModal" asp-controller="Admin" asp-route-id="@Model.Id">
+                <i class="fas fa-pencil-alt"></i>
+            </button>
+        </div>
+        <div class="card-header">
+            <h4 class="card-title">@Model.Name</h4>
+        </div>
+        @if(Model.ProfessorList != null)
+        {
+            <div class="subjectProfessors">
+                <div>
+                    <label>Predmetni nastavnici:</label>
+                </div>
+                @foreach(FacultyProfessorView professor in Model.ProfessorList)
+                {
+                    <a href="#" class="badge badge-primary badge-pill mr-2" id="professor@(professor.Id)">@professor.FullName</a>
+                }
+            </div>
+        }
+    </div>
+</div>
